@@ -19,13 +19,13 @@ export USER_GITHUB_TOKEN=your_token_here
 Check specific repositories:
 
 ```bash
-dependawhat check owner/repo1 owner/repo2
+dependawhat owner/repo1 owner/repo2
 ```
 
 Or configure repositories in `~/.dependawhat/config.yaml` and run:
 
 ```bash
-dependawhat check
+dependawhat
 ```
 
 ## Configuration

@@ -11,23 +11,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-var (
-	checkCmd = &cobra.Command{
-		Use:   "check [owner/repo...]",
-		Short: "Check for open Dependabot PRs across repositories",
-		Long: `Check for open Dependabot pull requests across multiple repositories.
-
-If no repositories are specified as arguments, checks all repositories
-configured in the 'repositories' section of your config file.
-
-You can specify multiple repositories: check owner1/repo1 owner2/repo2
-
-This is a read-only operation - it only displays PR information and does
-not perform any actions on the PRs.`,
-		RunE: runCheck,
-	}
-)
-
 func runCheck(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 

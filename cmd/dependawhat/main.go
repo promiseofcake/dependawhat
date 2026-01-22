@@ -12,7 +12,7 @@ import (
 var (
 	cfgFile string
 	rootCmd = &cobra.Command{
-		Use:   "dependawhat",
+		Use:   "dependawhat [owner/repo...]",
 		Short: "Check for open Dependabot PRs",
 		Long: `A read-only tool to check for open Dependabot pull requests.
 
@@ -21,6 +21,7 @@ CI status and deny list information. Perfect for monitoring dependency
 updates without the ability to approve, recreate, or close PRs.
 
 Configuration can be provided via YAML file or command-line flags.`,
+		RunE: runCheck,
 	}
 )
 
@@ -38,8 +39,6 @@ func init() {
 	viper.BindPFlag("deny-packages", rootCmd.PersistentFlags().Lookup("deny-packages"))
 	viper.BindPFlag("deny-orgs", rootCmd.PersistentFlags().Lookup("deny-orgs"))
 
-	// Add subcommand
-	rootCmd.AddCommand(checkCmd)
 }
 
 func initConfig() {
