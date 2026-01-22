@@ -1,0 +1,51 @@
+# Dependawhat Configuration
+# Place this file at ~/.dependawhat/config.yaml
+#
+# This is a read-only tool for checking Dependabot PRs.
+# It does not approve, recreate, or close PRs.
+
+# GitHub token (can also use USER_GITHUB_TOKEN env var)
+# github-token: your-token-here
+
+# Global settings apply to all repositories
+global:
+  # Packages to mark as denied across all repositories
+  # PRs for these packages will be shown with SKIPPED status
+  denied_packages:
+    - github.com/pkg/errors         # Deprecated, use stdlib errors with %w
+    - github.com/dgrijalva/jwt-go   # Unmaintained, use github.com/golang-jwt/jwt
+    - github.com/gorilla/mux        # Prefer chi or stdlib net/http
+    - gopkg.in/mgo.v2               # Unmaintained MongoDB driver
+    - github.com/sirupsen/logrus    # Prefer zerolog or zap for performance
+    - github.com/go-kit/kit         # Prefer lighter weight alternatives
+
+  # Organizations to mark as denied across all repositories
+  denied_orgs:
+    - datadog          # Expensive monitoring, prefer OpenTelemetry
+    - elastic          # Prefer OpenSearch alternatives
+    - newrelic         # Expensive APM solution
+
+# Repository configurations
+# Each repository listed here will be:
+# - Checked by the 'check' command (if no args provided)
+# - Can have specific deny lists
+# - Inherits global deny lists (in addition to repo-specific ones)
+repositories:
+  # Repositories to monitor (can be empty {} for just tracking)
+  myorg/user-service: {}
+
+  # Repository with specific configuration
+  myorg/legacy-api:
+    denied_packages:
+      - github.com/aws/aws-sdk-go     # Use v2 instead
+      - golang.org/x/net              # Pin to specific version
+    denied_orgs:
+      - hashicorp      # Licensing concerns with some packages
+
+  # Another example with minimal config
+  myorg/production-service:
+    denied_packages:
+      - "*alpha*"                     # No alpha versions
+      - "*beta*"                      # No beta versions
+      - "*rc*"                        # No release candidates
+      - "*/v0"                        # No v0 packages in production
