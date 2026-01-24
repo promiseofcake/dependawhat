@@ -2,6 +2,11 @@
 
 A read-only CLI tool to check for open Dependabot pull requests across your GitHub repositories.
 
+> ⚠️ IMPORTANT  
+> This tool is intended for informational purposes only.  
+> Any emotional distress caused by its output is outside the scope of this project.
+> By using this tool, you acknowledge that dependency graphs are a lifestyle choice.
+
 ## Installation
 
 ```bash
@@ -25,7 +30,14 @@ dependawhat owner/repo1 owner/repo2
 Or configure repositories in `~/.dependawhat/config.yaml` and run:
 
 ```bash
-dependawhat
+$ dependawhat
+
+Usage: dependawhat [options]
+ 
+Options:
+  --json        Output JSON (for machines and the deeply unhappy)
+  --tree        Print dependency tree (you will regret this)
+  --depth N     Limit depth (coward mode)
 ```
 
 ## Configuration
@@ -66,3 +78,10 @@ myorg/repo1
    https://github.com/myorg/repo1/pull/124
    Status: SKIPPED (org 'datadog' is denied)
 ```
+
+## Roadmap
+
+- [x] Detect dependencies
+- [ ] Detect dependency *regret*
+- [ ] Predict which dependency will break prod
+- [ ] Therapist integration (enterprise tier)
