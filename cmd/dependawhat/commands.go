@@ -46,6 +46,23 @@ func runCheck(cmd *cobra.Command, args []string) error {
 	// Create GitHub client
 	c := scm.NewGithubClient(http.DefaultClient, token)
 
+	// Check if icons should be used and set up status icons map
+	useIcons := viper.GetBool("global.use_icons")
+	statusIcons := map[string]string{
+		"success": "[success]",
+		"failure": "[failure]",
+		"pending": "[pending]",
+		"skipped": "[skipped]",
+	}
+	if useIcons {
+		statusIcons = map[string]string{
+			"success": "✅",
+			"failure": "❌",
+			"pending": "⏳",
+			"skipped": "🚫",
+		}
+	}
+
 	fmt.Println("Open Dependabot PRs:")
 	fmt.Println("-------------------------")
 
@@ -95,18 +112,16 @@ func runCheck(cmd *cobra.Command, args []string) error {
 				if pr.Skipped {
 					fmt.Printf("   #%d: %s\n", pr.Number, pr.Title)
 					fmt.Printf("   %s\n", pr.URL)
-					fmt.Printf("   Status: SKIPPED (%s)\n", pr.SkipReason)
+					fmt.Printf("   Status: %s  SKIPPED (%s)\n", statusIcons["skipped"], pr.SkipReason)
 				} else {
 					fmt.Printf("   #%d: %s\n", pr.Number, pr.Title)
 					fmt.Printf("   %s\n", pr.URL)
 					if pr.Status != "" {
-						statusIcon := "[pending]"
-						if pr.Status == "success" {
-							statusIcon = "[success]"
-						} else if pr.Status == "failure" {
-							statusIcon = "[failure]"
+						statusIcon := statusIcons["pending"]
+						if icon, exists := statusIcons[pr.Status]; exists {
+							statusIcon = icon
 						}
-						fmt.Printf("   Status: %s %s\n", statusIcon, pr.Status)
+						fmt.Printf("   Status: %s  %s\n", statusIcon, pr.Status)
 					}
 				}
 				fmt.Println()
