@@ -9,6 +9,10 @@
 
 # Global settings apply to all repositories
 global:
+  # Use icons instead of text for status indicators
+  # Set to true for ✅/❌/⏳ or false for [success]/[failure]/[pending]
+  use_icons: true
+
   # Packages to mark as denied across all repositories
   # PRs for these packages will be shown with SKIPPED status
   denied_packages:
