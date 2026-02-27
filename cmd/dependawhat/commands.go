@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os/exec"
 	"strings"
 
 	"github.com/promiseofcake/dependawhat/internal/scm"
@@ -14,10 +15,15 @@ import (
 func runCheck(cmd *cobra.Command, args []string) error {
 	ctx := context.Background()
 
-	// Get GitHub token
+	// Get GitHub token: flag/env/config first, then fall back to gh CLI auth
 	token := viper.GetString("github-token")
 	if token == "" {
-		return fmt.Errorf("GitHub token not provided. Use --github-token flag or set USER_GITHUB_TOKEN environment variable")
+		if out, err := exec.Command("gh", "auth", "token").Output(); err == nil {
+			token = strings.TrimSpace(string(out))
+		}
+	}
+	if token == "" {
+		return fmt.Errorf("GitHub token not found. Either run 'gh auth login' or set --github-token flag / USER_GITHUB_TOKEN environment variable")
 	}
 
 	// Get list of repositories to check
