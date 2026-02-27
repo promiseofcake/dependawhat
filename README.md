@@ -15,7 +15,13 @@ go install github.com/promiseofcake/dependawhat/cmd/dependawhat@latest
 
 ## Usage
 
-Set your GitHub token:
+Authentication is automatic if you're logged in with the GitHub CLI:
+
+```bash
+gh auth login
+```
+
+Alternatively, you can set a token explicitly via flag, env var, or config file:
 
 ```bash
 export USER_GITHUB_TOKEN=your_token_here
